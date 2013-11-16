@@ -1,0 +1,155 @@
+body {
+	margin-left: 15%;
+	margin-right: 15%;
+	padding: 0px;
+	background: #5E59F3;
+}
+
+#header {
+	width: 100%;
+	height: 20%;
+	background: #5C5A91;
+}
+/*
+#navi {
+	height: 10%;
+	width: 80%;
+	float: left;
+}
+
+#navi ul, ul li {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#navi ul{
+	position: absolute;
+}
+
+#navi ul li {
+	float: left;
+	border-width: 0 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent #25b #25b #9ce;
+}
+
+
+#navi ul a:link, ul a:visited {
+	text-decoration: none;
+	display: block;
+	width: 95px;
+	text-align: center;
+	padding: 5px 0;
+	font-weight: bold;
+	background-color: #27c;
+	color: #def;
+	border-top: 10px solid #25b;
+}
+
+#navi ul a:hover {
+	background-color: #28e;
+	color: #fff;
+	border-top: 20px solid #26d;
+}
+
+*/
+
+/* ------------------------CZĘŚĆ-GÓRNA-MENU------------------------ */
+
+/* wygląd głównego elementu - ol */
+#navi ol {
+	list-style-type:none;
+    padding:0;
+    margin:0;
+    background-color:#FFF;
+    font-size:18px;
+    height:2em;
+    line-height:2em;
+    text-align:center;
+	float: left;
+}
+
+/* wygląd wszystkich elementów - a - znajdujących się w elemencie - ol */
+#navi ol a {
+    display:block;
+    text-decoration:none;
+    color:#000;
+    padding:0 5px;
+}
+
+/* wygląd elementów - li - wszystkich dzieci elementu - ol */
+#navi ol > li {
+    float:left;
+    width:150px;
+    margin-left:1px;
+    background-color:#FDD700;
+    height:2em;
+}
+
+/* wygląd elementu - li - pierwszego dziecka elementu - ol */
+#navi ol > li:first-child {
+    margin-left:0;
+}
+
+/* wygląd elementów - li - wszystkich dzieci elementu - ol - po najechaniu kursorem myszki na element - li */
+#navi ol > li:hover {
+    background-color:#EEE;
+}
+
+/* wygląd elementu - a - dziecka elementu - li - będącego dzieckiem elementu - ol - po najechaniu kursorem myszki na element - li */
+#navi ol > li:hover > a {
+    color:#09C;
+}
+
+/* wygląd elementu - ul - dziecka elementu - li - będącego dzieckiem elementu - ol - po najechaniu kursorem myszki na element - li */
+#navi ol > li:hover > ul {
+    display:block;
+}
+
+/* ------------------------CZĘŚĆ-ROZWIJANA-MENU------------------------ */
+
+/* wygląd głównych rozwijanych elementów - ul */
+#navi ol > li > ul {
+    display:none;
+    list-style-type:none;
+    padding:0;
+    margin:0;
+	z-index: 2;
+	position: absolute;
+	width: 150px;
+}
+
+/* wygląd elementu - li - w części rozwijanej */
+#navi ol > li > ul > li {
+    background-color:#EEE;
+}
+
+/* wygląd elementu - a - w części rozwijanej */
+#navi ol > li > ul > li > a {
+   border-top:1px solid #FFF;
+}
+
+/* wygląd elementu - li - w części rozwijanej, po najechaniu kursorem myszki na dany element - li */
+#navi ol > li > ul > li:hover {
+   background-color:#DDD;
+}
+
+/* wygląd elementu - a - w części rozwijanej, po najechaniu kursorem myszki na element - li */
+#navi ol > li > ul > li:hover > a {
+   color:#09C;
+}
+
+#loginstatus {
+	width : 20%;
+	height: 10%;
+	float : right;
+}
+
+#content { 
+	width: 100%;
+	float: left;
+	height: 70%;
+	background: #A39FFD;
+} 

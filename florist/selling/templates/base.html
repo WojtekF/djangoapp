@@ -1,0 +1,44 @@
+<html>
+	<head>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="/static/style.css">
+	</head>
+
+	<body>
+
+		<div id='header'>
+					
+		</div>
+
+		<div id='navi'>
+			<ol>
+				<li><a href="#"> Towary </a> 
+					<ul>
+						<li><a href="#"> Dodaj </a>	</li>
+						<li><a href="#"> Edycja </a> </li> 
+					</ul>	
+				</li>
+				
+				<li><a href="#"> Kontrahenci</a> 
+					<ul>
+						<li><a href="#"> Dodaj </a> </li>
+                        <li><a href="#"> Edycja </a> </li>
+					</ul>
+				</li>
+
+				<li><a href="../sale/"> Sprzedaz </a> </li>
+				<li><a href="../statistics/"> Statystyki</a> </li>
+			</ol>
+		</div>
+	
+		<div id='loginstatus'>
+			<p>status logowania </p>	
+		</div>
+
+		<div id='content'>
+			{% block content %}{% endblock %}
+		</div>
+
+	</body>
+
+</html>
