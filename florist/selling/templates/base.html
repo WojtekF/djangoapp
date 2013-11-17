@@ -2,6 +2,8 @@
 	<head>
 		{% load staticfiles %}
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
+		<script language="JavaScript" type="text/javascript" src="/static/jquery-1.10.2.min.js"> </script>
+		<script src="/static/script.js"> </script>
 	</head>
 
 	<body>
@@ -14,20 +16,20 @@
 			<ol>
 				<li><a href="#"> Towary </a> 
 					<ul>
-						<li><a href="#"> Dodaj </a>	</li>
-						<li><a href="#"> Edycja </a> </li> 
+						<li><a href="/products/add"> Dodaj </a>	</li>
+						<li><a href="/products/edit"> Edycja </a> </li> 
 					</ul>	
 				</li>
 				
 				<li><a href="#"> Kontrahenci</a> 
 					<ul>
-						<li><a href="#"> Dodaj </a> </li>
-                        <li><a href="#"> Edycja </a> </li>
+						<li><a href="/contrahents/add"> Dodaj </a> </li>
+                        <li><a href="/contrahents/edit"> Edycja </a> </li>
 					</ul>
 				</li>
 
-				<li><a href="../sale/"> Sprzedaz </a> </li>
-				<li><a href="../statistics/"> Statystyki</a> </li>
+				<li><a href="/sale/"> Sprzedaz </a> </li>
+				<li><a href="/statistics/"> Statystyki</a> </li>
 			</ol>
 		</div>
 	

@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from selling.views import login, main, statistics, sale
+from selling.views import login, main, statistics, sale, products, contrahents
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -8,7 +8,9 @@ urlpatterns = patterns('',
     (r'^login/$', login),
 	(r'^main/$', main),
 	(r'^statistics/$', statistics),
-	(r'^sale/$', sale),	
+	(r'^sale/$', sale),
+	(r'^contrahents/(?P<option>\D+)/$', contrahents),
+	(r'^products/(?P<option>\D+)/$', products),
     # Examples:
     # url(r'^$', 'florist.views.home', name='home'),
     # url(r'^florist/', include('florist.foo.urls')),
