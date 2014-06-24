@@ -19,7 +19,7 @@ class Discount(BaseModel):
 	percentage = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(0)])
 
 class Order(BaseModel):
-	place = models.ForeignKey('SellingPlace')
+	place = models.ForeignKey('contractors.SellingPlace')
 	number = models.CharField(max_length=32)
 	payment = models.DecimalField(decimal_places=2,max_digits=6)
 	whoMadeIt = models.ForeignKey('core.MyUser',related_name='Order')
