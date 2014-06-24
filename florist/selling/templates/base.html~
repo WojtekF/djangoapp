@@ -28,7 +28,7 @@
 		</div>
 	
 		<div id='loginstatus'>
-			{% if user.is_authenticated %}	
+			{% if user.is_authenticated() %}	
 				<div><a> Wyloguj {{ user.username}}</a> </div>
 			{% else %}
 				<div> Niezalogowano </div>

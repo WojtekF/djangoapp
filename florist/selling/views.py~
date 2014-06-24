@@ -6,7 +6,6 @@ from core.mixins import *
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from .forms import *
-from core.models import *
 
 class AddProduct(LoginRequiredMixin,CreateView):#,PermissionRequiredMixin):
     form_class=AddProductForm
@@ -19,4 +18,4 @@ class AddProduct(LoginRequiredMixin,CreateView):#,PermissionRequiredMixin):
         product.save()
         return HttpResponseRedirect(self.get_success_url())
 
-user = MyUser(username='WWW', password='123456')
+

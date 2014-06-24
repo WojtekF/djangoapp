@@ -185,8 +185,4 @@ body {
   position: relative;
 }
 
-.clear-pagination {
-height: 30px;
-clear: both;
-}
 

@@ -1,66 +1,51 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from core.models import *
+from vats.models import *
 
-# Create your models here.
-
-#the only class which do not inherit from BaseModel
-#it's been created for extending custom Django User
-class CustomUser(models.Model):
-	DUser=models.OneToOneField(User)
-	Rights = models.ManyToManyField('Right')
-
-
-class BaseModel(models.Model):
-	Id= models.AutoField(primary_key=True)
-	IsActive = models.BooleanField(default=True)
-	LastModification = models.DateTimeField(auto_now=True)
-	WhoMofified=models.ForeignKey('CustomUser')
-	class Meta:
-		abstract=True
+class DailyReport(BaseModel):
+	ammount = models.DecimalField(decimal_places=2,max_digits=6)
+	date = models.DateField()
+	owner = models.ForeignKey('core.MyUser',related_name='Owner')
 
 class Customer (BaseModel):
-	NIP = models.CharField(max_length=13)
-	Name = models.CharField(max_length=512)
-	Address = models.CharField(max_length=512)
-	TelNumber = models.CharField(max_length=32)
-	CustomerDiscount = models.ForeignKey('Discount')
+	nip = models.CharField(max_length=13)
+	name = models.CharField(max_length=512)
+	address = models.CharField(max_length=512)
+	telNumber = models.CharField(max_length=32)
+	customerDiscount = models.ForeignKey('Discount')
 
 class Product(BaseModel):
-	Name = models.CharField(max_length=256)
-	Symbol = models.CharField(max_length=32)
-	VATTax=models.ForeignKey('VAT')
-	NettoPrice = models.DecimalField(decimal_places=2,max_digits=6)
-	InvoiceType = models.BooleanField(default=True) # if True Zamowienie, else Faktura
-
-class VAT(BaseModel):
-	Name = models.CharField(max_length=32)
-	Percentage = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(0)])
+	name = models.CharField(max_length=256)
+	symbol = models.CharField(max_length=32)
+	vatTax=models.ForeignKey('vats.VAT')
+	nettoPrice = models.DecimalField(decimal_places=2,max_digits=6)
+	invoiceType = models.BooleanField(default=True) # if True Zamowienie, else Faktura
 
 class Discount(BaseModel):
-	Percentage = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(0)])
+	percentage = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(0)])
 
-class Right(BaseModel):
-	Name = models.CharField(max_length=16)
 
 class SellingPlace(BaseModel):
-	Owner = models.ForeignKey('Customer')
-	Address = models.CharField(max_length=512)
-	TelNumber = models.CharField(max_length=32)
+	owner = models.ForeignKey('Customer')
+	address = models.CharField(max_length=512)
+	telNumber = models.CharField(max_length=32)
 
 class Order(BaseModel):
-	Place = models.ForeignKey('SellingPlace')
-	Number = models.CharField(max_length=32)
-	Payment = models.DecimalField(decimal_places=2,max_digits=6)
-	WhoMadeIt = models.ForeignKey('CustomUser')
+	place = models.ForeignKey('SellingPlace')
+	number = models.CharField(max_length=32)
+	payment = models.DecimalField(decimal_places=2,max_digits=6)
+	whoMadeIt = models.ForeignKey('core.MyUser',related_name='Order')
 
 class OrderPosition(BaseModel):
-	LP = models.IntegerField()
-	Order = models.ForeignKey('Order')
-	Product = models.ForeignKey('Product')
-	Ammount = models.DecimalField(decimal_places=2,max_digits=6)
-	NettoValue = models.DecimalField(decimal_places=2,max_digits=6)
-	VatValue = models.DecimalField(decimal_places=2,max_digits=6)
-	BruttoValue=models.DecimalField(decimal_places=2,max_digits=6)
+	lp = models.IntegerField()
+	order = models.ForeignKey('Order')
+	product = models.ForeignKey('Product')
+	ammount = models.DecimalField(decimal_places=2,max_digits=6)
+	nettoValue = models.DecimalField(decimal_places=2,max_digits=6)
+	vatValue = models.DecimalField(decimal_places=2,max_digits=6)
+	bruttoValue=models.DecimalField(decimal_places=2,max_digits=6)
 
-
+user = MyUser.objects.create(username='WWW')
+user.set_password('123456')
+user.save()
