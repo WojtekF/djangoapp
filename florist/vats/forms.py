@@ -6,3 +6,9 @@ class AddVatForm(BaseForm):
     
     class Meta(BaseForm.Meta):
         model = VAT 
+
+class AddDiscountForm(BaseForm):
+    field_to_filter = []
+	
+    class Meta(BaseForm.Meta):
+        model = Discount

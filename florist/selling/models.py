@@ -1,19 +1,12 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from core.models import *
-from vats.models import *
+#from vats.models import *
 
 class DailyReport(BaseModel):
 	ammount = models.DecimalField(decimal_places=2,max_digits=6)
 	date = models.DateField()
 	owner = models.ForeignKey('core.MyUser',related_name='Owner')
-
-class Customer (BaseModel):
-	nip = models.CharField(max_length=13)
-	name = models.CharField(max_length=512)
-	address = models.CharField(max_length=512)
-	telNumber = models.CharField(max_length=32)
-	customerDiscount = models.ForeignKey('Discount')
 
 class Product(BaseModel):
 	name = models.CharField(max_length=256)
@@ -24,12 +17,6 @@ class Product(BaseModel):
 
 class Discount(BaseModel):
 	percentage = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(0)])
-
-
-class SellingPlace(BaseModel):
-	owner = models.ForeignKey('Customer')
-	address = models.CharField(max_length=512)
-	telNumber = models.CharField(max_length=32)
 
 class Order(BaseModel):
 	place = models.ForeignKey('SellingPlace')

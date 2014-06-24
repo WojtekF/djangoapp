@@ -19,4 +19,15 @@ class AddProduct(LoginRequiredMixin,CreateView):#,PermissionRequiredMixin):
         product.save()
         return HttpResponseRedirect(self.get_success_url())
 
-user = MyUser(username='WWW', password='123456')
+def AddDiscount(LoginRequiredMixin,CreateView):
+	form_class = AddDiscountForm
+    model = Discount
+    template_name = 'discountAdd.html'
+
+    def form_valid(self,form):
+        discount = form.save(commit=False)
+        discount.whoModified = self.request.user
+        discount.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+#user = MyUser(username='WWW', password='123456')
