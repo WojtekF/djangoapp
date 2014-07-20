@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ customer.name }}</h2>
+    <div><a href="{% url 'sp_add' customer.id %}">Dodaj punkt sprzedazy</a></div>
+
+<div class="table">
+    <div class="table-header table-entry">
+        <div class="table-cell">Adres</div>
+        <div class="table-cell">Numer telefonu</div>
+        <div class="table-cell">Aktywny</div>
+        <div class="table-cell">Akcje</div>
+    </div>
+    {% for sp in object_list %}
+        <div class="table-entry">
+            <div class="table-cell">{{ sp.address }}</div>
+            <div class="table-cell">{{ sp.telNumber }}</div>
+            <div class="table-cell">{{ sp.isActive }}</div>
+            <div class="table-cell">
+                <div>
+                <a href="{% url 'sp_edit' customer.id sp.id %}" >Edytuj</a>
+                {% if sp.isActive %}
+                    <a href="{% url 'sp_del' customer.id sp.id %}" >Usun</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="clear-pagination"></div>
+
+</div>
+
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+            <a href="{% url 'customer_details' customer.id page_obj.previous_page_number %}">Poprzednia strona</a>
+        {% endif %}
+        <span class="page-current">
+            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="{% url 'customer_details' customer.id page_obj.next_page_number %}">Nastepna strona</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}

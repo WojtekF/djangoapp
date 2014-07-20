@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="table">
+    <div class="table-header table-entry">
+        <div class="table-cell">Nazwa</div>
+        <div class="table-cell">Symbol</div>
+        <div class="table-cell"> VAT</div>
+        <div class="table-cell">Cena netto</div>
+        <div class="table-cell">Aktywny</div>
+        <div class="table-cell">Akcje</div>
+    </div>
+	{% for product in object_list %}
+		<div class="table-entry">
+			<div class="table-cell">{{ product.name }}</div>
+			<div class="table-cell">{{ product.symbol }}</div>
+            <div class="table-cell">{{ product.vatTax }}</div>
+            <div class="table-cell">{{ product.nettoPrice }}</div>
+		    <div class="table-cell">{{ product.isActive }}</div>
+			<div class="table-cell">
+			    <div>
+				<a href="{% url 'product_edit' product.id %}" >Edytuj</a>
+				{% if product.isActive %}
+				    <a href="{% url 'product_del' product.id %}" >Usun</a>
+				{% endif %}
+			    </div>
+			</div>
+		</div>
+	{% endfor %}
+	<div class="clear-pagination">
+	</div>
+     
+</div> 
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+            <a href="{% url 'products_list' page_obj.previous_page_number %}">Poprzednia strona</a>
+        {% endif %}
+        <span class="page-current">
+            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="{% url 'products_list' page_obj.next_page_number %}">Nastepna strona</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}  

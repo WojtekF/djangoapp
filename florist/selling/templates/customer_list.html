@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="table">
+    <div class="table-header table-entry">
+        <div class="table-cell">Nazwa</div>
+        <div class="table-cell">NIP</div>
+        <div class="table-cell">Aktywny</div>
+        <div class="table-cell">Akcje</div>
+    </div>
+	{% for customer in object_list %}
+		<div class="table-entry">
+			<div class="table-cell">{{ customer.name }}</div>
+			<div class="table-cell">{{ customer.nip }}</div>
+		    <div class="table-cell">{{ customer.isActive }}</div>
+			<div class="table-cell">
+			    <div>
+				<a href="{% url 'customer_edit' customer.id %}" >Edytuj</a>
+				{% if customer.isActive %}
+				    <a href="{% url 'customer_del' customer.id %}" >Usun</a>
+				{% endif %}
+				<a href="{% url 'customer_details' customer.id %}">Szczegoly</a>
+			    </div>
+			</div>
+		</div>
+	{% endfor %}
+	<div class="clear-pagination">
+	</div>
+     
+</div> 
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+            <a href="{% url 'customer_list' page_obj.previous_page_number %}">Poprzednia strona</a>
+        {% endif %}
+        <span class="page-current">
+            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="{% url 'customer_list' page_obj.next_page_number %}">Nastepna strona</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}  
