@@ -11,7 +11,7 @@ from core.models import *
 class AddProduct(LoginRequiredMixin,CreateView):#,PermissionRequiredMixin):
     form_class=AddProductForm
     model=Product
-    template_name = 'productsAdd.html'
+    template_name = 'form.html'
 
     def form_valid(self,form):
         product=form.save(commit=False)
@@ -20,9 +20,9 @@ class AddProduct(LoginRequiredMixin,CreateView):#,PermissionRequiredMixin):
         return HttpResponseRedirect(self.get_success_url())
 
 def AddDiscount(LoginRequiredMixin,CreateView):
-	form_class = AddDiscountForm
+    form_class = AddDiscountForm
     model = Discount
-    template_name = 'add_discount.html'
+    template_name = 'form.html'
 
     def form_valid(self,form):
         discount = form.save(commit=False)
@@ -30,4 +30,4 @@ def AddDiscount(LoginRequiredMixin,CreateView):
         discount.save()
         return HttpResponseRedirect(self.get_success_url())
 
-user = MyUser(username='WWW', password='123456')
+#user = MyUser(username='WWW', password='123456')

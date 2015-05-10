@@ -1,0 +1,10 @@
+            {% for product in products %}
+            <tr class="{% cycle 'odd' 'even' %}" role="row">
+                <td class="hidden sorting_1">{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.symbol }}</td>
+                <td>{{ product.vatTax }}</td>
+                <td>{{ product.nettoPrice }}</td>
+                <td>{{ product.bruttoPrice  }}</td>
+            </tr>
+            {% endfor %}

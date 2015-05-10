@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title"></h4>
+</div>
+<div id="form-modal-body" class="modal-body">
+    <select class="form-control" size="20" id="customer_dd">
+    {% for c in contractors %}
+        <option value="{{c.id}}_{{c.name}}">
+            <span>{{c.name}}</span>
+        </option>
+    {% endfor %}
+    </select>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default clientSelector" onclick="createOrder('#customer_dd :selected')">Wybierz</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+</div>
+
+<script>
+    function createOrder(selected){
+        if($(selected)[0]){
+            console.log($(selected)[0]);
+            var splitted = $(selected).val().split('_');
+            $('.customersDialog').load('/create_new_order/'+ splitted[0], function () {});
+        }
+        else{
+            alert('nie wybrano zadnego kontrahenta');
+        }
+    }
+</script>

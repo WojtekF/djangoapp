@@ -1,6 +1,152 @@
 {% extends "base.html" %}
 
-{% block content %}
-	Tutaj sprzedaz
+{% block scripts %}
+<script type="text/javascript" language="javascript" src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 
+<script>
+
+    $(document).on('show.bs.modal', '.modal', function () {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    });
+    var rowNum = 0;
+    function addOrder(){
+       rowNum++;
+        $('.customersDialog').load('/get_contractors/', function () {
+            $('#form-modal').modal('toggle');
+            console.log('zaladowano content')
+        });
+       $(".orders").append(content);
+       console.log("row "+rowNum+" added-trololol");
+    };
+    function deleteOrder($param){
+        $param.remove();
+    };
+$(document).ready(function() {
+    $('#prodTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Polish.json"
+            }
+        });
+    $('#prodTable tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('active');
+    } );
+} );
+
+$(function(){
+    $('.productSelector').on('click',function(){
+        var products = $('#prodTable tr.active').map(function(){
+            $(this).toggleClass('active');
+            var $tr = $(this).clone();
+            var id = $tr.find('td:first').text();
+            var elementExists = $('#selectedProd > tbody:last').find('td:first').map(function(){
+                var thisId = $(this).next().text();
+                if(thisId == id){
+                    return 1;
+                }
+            });
+            if(elementExists[0]){
+               return 1;
+            }
+            $tr.prepend("<td><div class='checkbox'><label><input type='checkbox' class='check'></label></div></td>");
+            $tr.append("<td><input class='amount' type='text' oninput='changedInput(this)'/></td><td><input class='nettoValue' disabled type='text'/></td><td><input class='bruttoValue' disabled type='text'/></td>");
+            $('#selectedProd > tbody:last').append($tr);
+        });
+        if(products.length){
+            alert('some products were duplicated.');
+        }
+        $('#form-modal > .modal-dialog').animate({'width':'80%'},300,'linear');
+    });
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div><button class='addOrder' onclick='addOrder()'>Dodaj klienta</button></div>
+<div class='orders'>
+    <div id='order0' class='order'>
+        <div class='orderHeader'>
+            <div>
+                <div>combo z kontrahentami</div>
+                <div class='hiddenId'></div>
+                <input id='contractors'/>
+            </div>
+
+            <div>przycisk do dodania punktu sprzedazy</div>
+            <div><button class='deleteOrder' onclick="deleteOrder($('#order0'))">Usun klienta</button></div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content customersDialog" >
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="productsList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="itemsContent">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Wybierz towary</h4>
+            </div>
+
+            <div id="form-modal-body" class="modal-body">
+                <table class="table table-bordered" id="prodTable">
+                    <thead>
+                       <tr>
+                           <th >Id</th>
+                           <th>Nazwa</th>
+                           <th>Symbol</th>
+                           <th>VAT</th>
+                           <th>Cena netto</th>
+                           <th>Cena brutto</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                     {% for product in products %}
+                    <tr class="{% cycle 'odd' 'even' %}" role="row">
+                        <td class="sorting_1">{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.symbol }}</td>
+                        <td>{{ product.vatTax }}</td>
+                        <td>{{ product.nettoPrice }}</td>
+                        <td>{{ product.bruttoPrice  }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                       <tr>
+                           <th >Id</th>
+                           <th>Nazwa</th>
+                           <th>Symbol</th>
+                           <th>VAT</th>
+                           <th>Cena netto</th>
+                           <th>Cena brutto</th>
+                       </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default productSelector" data-dismiss="modal">Wybierz</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

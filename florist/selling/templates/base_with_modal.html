@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block modals %}
+<div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div id="form-modal-body" class="modal-body">
+
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+<div id="dataConfirmModal" class="modal fade" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="dataConfirmLabel">Potwierdz usuwanie</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Anuluj</button>
+                <a class="btn btn-primary" id="dataConfirmOK" method="POST">Usun</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    var h=""
+    $('a[data-confirm]').click(function(ev) {
+        ev.preventDefault();
+        h = $(this).attr('href');
+        console.log(h);
+        $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+        $('#dataConfirmModal').modal('show');
+        return false;
+    });
+     $('#dataConfirmOK').click(function(e){
+            e.preventDefault();
+            $.ajax({
+                type : 'post',
+                url : h,
+                success: function(xhr, ajaxOptions, thrownError) {
+                    $('#dataConfirmModal').modal('hide');
+                    $('.alert').css('visibility','visible');
+                },
+                error : function(xhr, ajaxOptions, thrownError) {
+                },
+                complete : function(msg){
+                }
+            });
+        });
+});
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!this.crossDomain) {
+            var csrftoken = getCookie('csrftoken');
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+var formAjaxSubmit = function(form, modal, url, title) {
+    $(modal).find('.modal-title').text(title);
+    $(form).submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: $(this).attr('method'),
+            url: url,
+            data: $(this).serialize(),
+            success: function (xhr, ajaxOptions, thrownError) {
+                if ( $(xhr).find('.error').length > 0 ) {
+                    $(modal).find('.modal-body').html(xhr);
+                    formAjaxSubmit(form, modal, url);
+                } else {
+                    $(modal).modal('toggle');
+                    $('.alert').css('visibility','visible');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+};
+$('#add').click(function() {
+    var url = '';
+    console.log($(this).attr('href'));
+    if($(this).attr('href')){
+        url = $(this).attr('href');
+    }
+    else{
+        url = '{% url form_submit_url %}';
+    }
+
+    $('#form-modal-body').load(url, function () {
+        $('#form-modal').modal('toggle');
+        console.info("button add clicked")
+        $('#form-modal-body form').attr('action', url);
+        formAjaxSubmit('#form-modal-body form', '#form-modal', url, '{{ modal_title }}');
+    });
+});
+$('.edit').click(function(e){
+    e.preventDefault();
+    var url = $(this).attr('href');
+    console.log(url);
+    $('#form-modal-body').load(url, function () {
+        $('#form-modal').modal('toggle');
+        console.info("button edit clicked")
+        $('#form-modal-body form').attr('action',url);
+        formAjaxSubmit('#form-modal-body form', '#form-modal', url, '{{ edit_title }}');
+    });
+});
+</script>
+{% endblock %}

@@ -1,49 +1,51 @@
-{% extends "base.html" %}
-
+{% extends "base_with_modal.html" %}
+{% load templatetags %}
 {% block content %}
-<div class="table">
-    <div class="table-header table-entry">
-        <div class="table-cell">Nazwa</div>
-        <div class="table-cell">Symbol</div>
-        <div class="table-cell"> VAT</div>
-        <div class="table-cell">Cena netto</div>
-        <div class="table-cell">Aktywny</div>
-        <div class="table-cell">Akcje</div>
+
+<button id="add" type="button" class="btn btn-large">Dodaj produkt</button>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+           <tr>
+               <th></th>
+               <th>Nazwa</th>
+               <th>Symbol</th>
+               <th>VAT</th>
+               <th>Cena netto</th>
+               <th>Aktywny</th>
+               <th>Akcje</th>
+           </tr>
+        </thead>
+        <tbody>
+            {% for product in object_list %}
+            <tr>
+                <td>{% if not product.vatTax.isActive %} <span class="glyphicon glyphicon-asterisk" title="Stawka {{ product.vatTax }} nie jest aktywna"></span>{% endif %}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.symbol }}</td>
+                <td>{{ product.vatTax }}</td>
+                <td>{{ product.nettoPrice }}</td>
+                <td>{{ product.isActive|is_active }}</td>
+                <td>
+                    {% if product.isActive %}
+                     <div>
+                        <a href="{% url 'product_edit' product.id %}" class="edit">Edytuj</a>
+                        <a href="{% url 'product_del' product.id %}" data-confirm="Czy na pewno chcesz usunac {{ product.name }}?">Usun</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <div>
+        <ul class="pager">
+            <li class="previous {% if not page_obj.has_previous %} disabled {% endif %}" > <a href="{% if page_obj.has_previous %} {% url 'products_list' page_obj.previous_page_number %} {% endif %}">&larr; Poprzednia strona</a></li>
+            <li>Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.</li>
+            <li class="next {% if not page_obj.has_next %} disabled {% endif %}"><a href=" {% if page_obj.has_next %} {% url 'products_list' page_obj.next_page_number %} {% endif %}">Nastepna strona &rarr;</a></li>
+        </ul>
     </div>
-	{% for product in object_list %}
-		<div class="table-entry">
-			<div class="table-cell">{{ product.name }}</div>
-			<div class="table-cell">{{ product.symbol }}</div>
-            <div class="table-cell">{{ product.vatTax }}</div>
-            <div class="table-cell">{{ product.nettoPrice }}</div>
-		    <div class="table-cell">{{ product.isActive }}</div>
-			<div class="table-cell">
-			    <div>
-				<a href="{% url 'product_edit' product.id %}" >Edytuj</a>
-				{% if product.isActive %}
-				    <a href="{% url 'product_del' product.id %}" >Usun</a>
-				{% endif %}
-			    </div>
-			</div>
-		</div>
-	{% endfor %}
-	<div class="clear-pagination">
-	</div>
-     
-</div> 
-{% if is_paginated %}
-<div class="pagination">
-    <span class="page-links">
-        {% if page_obj.has_previous %}
-            <a href="{% url 'products_list' page_obj.previous_page_number %}">Poprzednia strona</a>
-        {% endif %}
-        <span class="page-current">
-            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
-        </span>
-        {% if page_obj.has_next %}
-            <a href="{% url 'products_list' page_obj.next_page_number %}">Nastepna strona</a>
-        {% endif %}
-    </span>
+    {% endif %}
 </div>
-{% endif %}
 {% endblock %}  

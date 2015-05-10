@@ -111,7 +111,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/Django/florist/djangoapp/florist/selling/templates"
+    "/home/Django/florist/djangoapp/florist/selling/templates",
 )
 
 INSTALLED_APPS = (
@@ -121,10 +121,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrapform',
+    'crispy_forms',
     'selling',
     'vats',
     'core',
     'contractors',
+    'products',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -162,7 +165,7 @@ LOGGING = {
     }
 }
 AUTH_USER_MODEL = 'core.MyUser'
-LOGIN_REDIRECT_URL ='/main'
+LOGIN_REDIRECT_URL ='/products'
 TEMPLATE_CONTEXT_PROCESSORS=("django.contrib.auth.context_processors.auth",
 "django.core.context_processors.debug",
 "django.core.context_processors.i18n",

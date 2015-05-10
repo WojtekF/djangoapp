@@ -1,45 +1,46 @@
-{% extends "base.html" %}
-
+{% extends "base_with_modal.html" %}
+{% load templatetags %}
 {% block content %}
-<div class="table">
-    <div class="table-header table-entry">
-        <div class="table-cell">Tytul</div>
-        <div class="table-cell">Wartosc w %</div>
-        <div class="table-cell">Aktywny</div>
-        <div class="table-cell">Akcje</div>
-    </div>
-	{% for vat in object_list %}
-		<div class="table-entry">
-			<div class="table-cell">{{ vat.name }}</div>
-			<div class="table-cell">{{ vat.percentage }}</div>
-			<div class="table-cell">{{ vat.isActive }}</div>
-			<div class="table-cell">
-			    <div>
-				<a href="{% url 'vat_edit' vat.id %}" >Edytuj</a>
-				{% if vat.isActive %}
-				    <a href="{% url 'vat_del' vat.id %}" >Usun</a>
-				{% endif %}
-			    </div>
-			</div>
-		</div>
-	{% endfor %}
-	<div class="clear-pagination">
-	</div>
-     
-</div> 
-{% if is_paginated %}
-<div class="pagination">
-    <span class="page-links">
-        {% if page_obj.has_previous %}
-            <a href="{% url 'vat_list' page_obj.previous_page_number %}">Poprzednia strona</a>
-        {% endif %}
-        <span class="page-current">
-            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
-        </span>
-        {% if page_obj.has_next %}
-            <a href="{% url 'vat_list' page_obj.next_page_number %}">Nastepna strona</a>
-        {% endif %}
-    </span>
+<button id="add" type="button" class="btn btn-large">Dodaj stawke VAT</button>
+
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tytul</th>
+                <th>Wartosc</th>
+                <th>Aktywny</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vat in object_list %}
+                <tr>
+                    <td>{{ vat.name }}</td>
+                    <td>{{ vat.percentage }}</td>
+                    <td>{{ vat.isActive|is_active }}</td>
+                    <td>
+                        {% if vat.isActive %}
+                        <div>
+                            <a href="{% url 'vat_edit' vat.id %}" class="edit">Edytuj</a>
+                            <a href="{% url 'vat_del' vat.id %}" data-confirm="Czy na pewno chcesz usunac {{ vat.name }}?">Usun</a>
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+        <div>
+            <ul class="pager">
+                <li class="previous {% if not page_obj.has_previous %} disabled {% endif %}" ><a href="{% if page_obj.has_previous %} {% url 'vat_list' page_obj.previous_page_number %} {% endif %}">&larr; Poprzednia strona</a></li>
+                <li>Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.</li>
+                <li class="next {% if not page_obj.has_next %} disabled {% endif %}"><a href="{% if page_obj.has_next %} {% url 'vat_list' page_obj.next_page_number %} {% endif %}">Nastepna strona &rarr;</a></li>
+            </ul>
+        </div>
+    {% endif %}
 </div>
-{% endif %}
-{% endblock %} 
+
+{% endblock %}

@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{customer.name}}</h4>
+    <div class="row">
+        <div class="dropdown col-md-4">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                Wybierz miejsce sprzedazy
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                {% for sp in customer.sp %}
+                    <li role="presentation" data-spid="{{sp.id}}"><a role="menuitem" tabindex="-1" href="#">{{sp.address}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <button type="button" aria-hidden="true" class="btn btn-default col-md-4 col-md-offset-4" id="addProducts">Dodaj produkty</button>
+    </div>
+</div>
+<div id="form-modal-body" class="modal-body">
+    <table class="table table-stripped" id="selectedProd">
+        <thead>
+            <th>Faktura</th>
+            <th >Id</th>
+            <th>Nazwa</th>
+            <th>Symbol</th>
+            <th>VAT</th>
+            <th>Cena netto</th>
+            <th>Cena brutto</th>
+            <th>Ilosc</th>
+            <th>wartosc netto</th>
+            <th>wartosc brutto</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default clientSelector">Wybierz</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+</div>
+
+<script>
+    $(function(){
+        $(".dropdown-menu").on('click', 'li a', function(){
+            var id = $(this).parent().data('spid');
+            $(".dropdown-toggle:first-child").text($(this).text());
+            $(".dropdown-toggle:first-child").val($(this).text());
+            $(".dropdown-toggle:first-child").data('spid',id);
+        });
+        $('#addProducts').on('click', function(){
+
+                    $('#productsList').modal('toggle');
+
+        });
+});
+ function changedInput(p){
+            var str = $(p).val().replace(/^(\d+)[.,]+(\d{1,2})?\d*$/g, '$1.$2');
+            var number = parseFloat(str);
+            $(p).val(number.toString());
+            $(p).parent().next().children().val(number.toString());
+        };
+</script>
